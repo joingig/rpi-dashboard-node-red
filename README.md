@@ -9,5 +9,7 @@ Flow Schematic:
 
 ![flow_sch](https://github.com/joingig/rpi-dashboard-node-red/blob/main/flow-sch-pic0.png "flow_sch")
 
+Node **sar-c-tail-awk-bc** can easyly replace node chain: **sar-c** -> **cut Average idle** -> **100-Idle**
+
 Main [flow.json](https://github.com/joingig/rpi-dashboard-node-red/blob/main/flows%20.json)
 
