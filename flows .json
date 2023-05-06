@@ -1,0 +1,475 @@
+[
+    {
+        "id": "0f035246b2c9ebfa",
+        "type": "tab",
+        "label": "get util",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "4ad420c07b9edfd9",
+        "type": "inject",
+        "z": "0f035246b2c9ebfa",
+        "name": "tick tack",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "60",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 260,
+        "wires": [
+            [
+                "997f8ab79ede2886",
+                "8e629d716cb0cca1",
+                "020e47851afe10d1"
+            ]
+        ]
+    },
+    {
+        "id": "f5955d03a577844a",
+        "type": "debug",
+        "z": "0f035246b2c9ebfa",
+        "name": "debug string end",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 970,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "e67d0d2ac957eb88",
+        "type": "exec",
+        "z": "0f035246b2c9ebfa",
+        "command": "echo \"100-`sar -C | tail -1 | awk '{print $8}'`\" | /usr/bin/bc",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "3",
+        "winHide": false,
+        "oldrc": false,
+        "name": "sar-c-tail-awk-bc",
+        "x": 400,
+        "y": 160,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "997f8ab79ede2886",
+        "type": "exec",
+        "z": "0f035246b2c9ebfa",
+        "command": "sar -C",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "3",
+        "winHide": false,
+        "oldrc": false,
+        "name": "sar-c",
+        "x": 370,
+        "y": 260,
+        "wires": [
+            [
+                "22eef91faa537ae8",
+                "f59a3786f7073357"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "22eef91faa537ae8",
+        "type": "string",
+        "z": "0f035246b2c9ebfa",
+        "name": "cut Average idle",
+        "methods": [
+            {
+                "name": "getRightMost",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "Average:"
+                    }
+                ]
+            },
+            {
+                "name": "humanize",
+                "params": []
+            },
+            {
+                "name": "right",
+                "params": [
+                    {
+                        "type": "num",
+                        "value": "6"
+                    }
+                ]
+            },
+            {
+                "name": "toInteger",
+                "params": []
+            }
+        ],
+        "prop": "payload",
+        "propout": "payload",
+        "object": "msg",
+        "objectout": "msg",
+        "x": 620,
+        "y": 260,
+        "wires": [
+            [
+                "b8f4b0e511e5fa3b"
+            ]
+        ]
+    },
+    {
+        "id": "7a3bcf6d1be514fa",
+        "type": "debug",
+        "z": "0f035246b2c9ebfa",
+        "name": "debug sar-c",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 950,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "f59a3786f7073357",
+        "type": "string",
+        "z": "0f035246b2c9ebfa",
+        "name": "cut Average line",
+        "methods": [
+            {
+                "name": "getRightMost",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "Average:"
+                    }
+                ]
+            }
+        ],
+        "prop": "payload",
+        "propout": "payload",
+        "object": "msg",
+        "objectout": "msg",
+        "x": 620,
+        "y": 320,
+        "wires": [
+            [
+                "7a3bcf6d1be514fa"
+            ]
+        ]
+    },
+    {
+        "id": "b8f4b0e511e5fa3b",
+        "type": "function",
+        "z": "0f035246b2c9ebfa",
+        "name": "100-Idle",
+        "func": "msg.payload = 100-msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 260,
+        "wires": [
+            [
+                "f5955d03a577844a",
+                "c8c8433070bfa384"
+            ]
+        ]
+    },
+    {
+        "id": "c8c8433070bfa384",
+        "type": "ui_gauge",
+        "z": "0f035246b2c9ebfa",
+        "name": "",
+        "group": "22a235af8d0fe0c7",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "CPU Usage",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 950,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "8e629d716cb0cca1",
+        "type": "exec",
+        "z": "0f035246b2c9ebfa",
+        "command": "cat /proc/meminfo",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "3",
+        "winHide": false,
+        "oldrc": false,
+        "name": "cat /proc/meminfo",
+        "x": 410,
+        "y": 540,
+        "wires": [
+            [
+                "7d6a59c95b7af471"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "7d6a59c95b7af471",
+        "type": "string",
+        "z": "0f035246b2c9ebfa",
+        "name": "cut MemFree",
+        "methods": [
+            {
+                "name": "getRightMost",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "MemFree:"
+                    }
+                ]
+            },
+            {
+                "name": "humanize",
+                "params": []
+            },
+            {
+                "name": "toInteger",
+                "params": []
+            }
+        ],
+        "prop": "payload",
+        "propout": "payload",
+        "object": "msg",
+        "objectout": "msg",
+        "x": 610,
+        "y": 540,
+        "wires": [
+            [
+                "efa829edcbd2d21b"
+            ]
+        ]
+    },
+    {
+        "id": "1f2b0f85e39afeea",
+        "type": "debug",
+        "z": "0f035246b2c9ebfa",
+        "name": "debug mem",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 970,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "efa829edcbd2d21b",
+        "type": "function",
+        "z": "0f035246b2c9ebfa",
+        "name": "472456-",
+        "func": "msg.payload = 472456-msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 540,
+        "wires": [
+            [
+                "1f2b0f85e39afeea",
+                "651fa307b78d0d99"
+            ]
+        ]
+    },
+    {
+        "id": "651fa307b78d0d99",
+        "type": "ui_gauge",
+        "z": "0f035246b2c9ebfa",
+        "name": "Memory Usage",
+        "group": "22a235af8d0fe0c7",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "donut",
+        "title": "Memory Usage",
+        "label": "Kb",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "472456",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 980,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "b3aecf8066965af6",
+        "type": "comment",
+        "z": "0f035246b2c9ebfa",
+        "name": "472456 Kb total memory in lab setup",
+        "info": "cat /proc/meminfo  | egrep -i MemTotal\nMemory in Work ~= MemTotal - MemFree\nTODO\nNeed check MemAvailable",
+        "x": 880,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "020e47851afe10d1",
+        "type": "exec",
+        "z": "0f035246b2c9ebfa",
+        "command": "cat /sys/class/thermal/thermal_zone0/temp",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "3",
+        "winHide": false,
+        "oldrc": false,
+        "name": "cat thermal_zone0",
+        "x": 410,
+        "y": 640,
+        "wires": [
+            [
+                "511bf96eb680a717"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "511bf96eb680a717",
+        "type": "function",
+        "z": "0f035246b2c9ebfa",
+        "name": "div 1000",
+        "func": "msg.payload = (msg.payload/1000).toFixed(1);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 640,
+        "wires": [
+            [
+                "c0562e11a746d351",
+                "ad5d8e7836b4554f"
+            ]
+        ]
+    },
+    {
+        "id": "c0562e11a746d351",
+        "type": "ui_gauge",
+        "z": "0f035246b2c9ebfa",
+        "name": "CPU Temperature",
+        "group": "22a235af8d0fe0c7",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "CPU Temperature",
+        "label": "C",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "85",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 990,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "ad5d8e7836b4554f",
+        "type": "debug",
+        "z": "0f035246b2c9ebfa",
+        "name": "debug temp",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 970,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "22a235af8d0fe0c7",
+        "type": "ui_group",
+        "name": "RPIZ",
+        "tab": "51da61b218277c4a",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "51da61b218277c4a",
+        "type": "ui_tab",
+        "name": "RPIZ Home Lab",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
