@@ -1,5 +1,5 @@
 # rpi-dashboard-node-red
-Raspberry Pi simple dashboard based on [Node-RED](https://nodered.org/)
+Raspberry Pi ([Zero](https://www.raspberrypi.com/products/raspberry-pi-zero/)) simple dashboard based on [Node-RED](https://nodered.org/)
 
 Just need to add node [node-red-contrib-string](https://flows.nodered.org/node/node-red-contrib-string)
 
