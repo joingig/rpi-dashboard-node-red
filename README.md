@@ -13,6 +13,8 @@ Node **sar-c-tail-awk-bc** can easyly replace node chain: **sar-c** -> **cut Ave
 
 Main [flow.json](https://github.com/joingig/rpi-dashboard-node-red/blob/main/flows%20.json)
 
+# TODO
+
 - [ ] Сonsider MemAvailable
 - [ ] Add GPIO Activity
 - [ ] :tada:
